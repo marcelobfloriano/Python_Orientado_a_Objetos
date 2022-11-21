@@ -5,7 +5,7 @@ class Conta:
         self.__titular = titular
         self.__saldo = saldo
         self.__limite = limite
-
+        
     def extrato(self):
         print(f'O saldo do {self.__titular} é R$ {self.__saldo}')
 
@@ -14,22 +14,26 @@ class Conta:
         print(f'Depositando R$ {valor} na conta de {self.__titular}')
         print(f'Novo saldo R$ {self.__saldo}')
 
+    def __podeSacar(self, valor_do_saque):
+        valor_disponivel_para_saque = self.__saldo + self.__limite 
+        return valor_do_saque <= valor_disponivel_para_saque
+    
     def sacar(self, valor):
         print(f'Valor do Saque R$ {valor}')
-        if (self.__saldo + self.__limite) < valor:
-            print('Saldo insuficiente...')
+        if(self.__podeSacar(valor)):
+            self.__saldo -= valor
+            print(f'Novo Saldo R$ {self.__saldo}')
         else:
-            (self.__saldo + self.__limite) - valor 
-            print(f'Sacando R$ {valor} na conta de {self.__titular}')
+            print('Saldo insuficiente...')
+            
             
     
     def transferir(self, valor, destino):
-        if valor <= self.__saldo:
+        if self.__saldo >= valor:     
             self.sacar(valor)
             destino.depositar(valor)
         else:
-            print('Saldo insuficiente para tranferencia')
-        
+            print('Saldo insuficiente para transferencia')
     
     @property
     def saldo(self):
@@ -47,7 +51,13 @@ class Conta:
     def limite(self, limite):
         self.__limite = limite
 
+    @staticmethod
+    def codigoBanco():
+        return '001'
 
+    @staticmethod
+    def codigosBancos():
+        return {'BB':'001', 'Bradesco': '237', 'Caixa': '034'}
 
 
 
@@ -63,3 +73,11 @@ conta2.depositar(500)
 conta2.sacar(350)
 
 conta.transferir(2000, conta2)
+
+a = conta.codigoBanco()
+print(a)
+
+b = conta.codigosBancos()
+print(b)
+'''for k, v in b.items:
+    print(f'{k} {v}')'''
